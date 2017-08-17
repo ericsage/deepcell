@@ -74,7 +74,7 @@ func deepcellHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Could not decode json into genes list!")
 	}
-	termReply := knockout(ontology, genes, growth == "true")
+	termReply := knockout(growth == "true", ontology, genes)
 	res := &Response{
 		Data:   termReply,
 		Errors: []string{},
