@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+service DeepCell {
+  rpc Run (Request) returns (Reply) {}
+}
+
+message Request {
+  repeated string genes = 2;
+  string ontology = 1;
+  bool growth = 3;
+}
+
+message Reply {
+  repeated Node nodes = 3;
+  repeated Edge edges = 4;
+}
+
+message Node {
+  string id = 1;
+  double importance = 2;
+  double phenotype = 3;
+  repeated double neurons = 4;
+  Coordinate coordinate = 5;
+}
+
+message Coordinate {
+  double x = 1;
+  double y = 2;
+}
+
+message Edge {
+  string source = 1;
+  string target = 2;
+}
