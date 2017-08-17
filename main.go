@@ -34,6 +34,7 @@ func getenv(key, fallback string) string {
 
 func knockout(growth bool, ontology string, genes []string) *dc.Reply {
 	log.Println("About to open connection")
+	log.Println("Growth is set to", growth, "ontology is set to", ontology)
 	address := serverAddr + ":" + serverPort
 	log.Println(address)
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
