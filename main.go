@@ -32,7 +32,7 @@ func getenv(key, fallback string) string {
 	return value
 }
 
-func knockout(ontology string, genes []string) *dc.Reply {
+func knockout(growth bool, ontology string, genes []string) *dc.Reply {
 	log.Println("About to open connection")
 	address := serverAddr + ":" + serverPort
 	log.Println(address)
@@ -46,7 +46,7 @@ func knockout(ontology string, genes []string) *dc.Reply {
 	req := &dc.Request{
 		Genes:    genes,
 		Ontology: ontology,
-		Growth:   false,
+		Growth:   growth,
 	}
 	log.Println("About to process request")
 	rep, err := client.Run(context.Background(), req)
@@ -68,12 +68,13 @@ func deepcellHandler(w http.ResponseWriter, r *http.Request) {
 	if ontology == "" {
 		ontology = "GO"
 	}
+	growth := url.Query().Get("growth")
 	var genes []string
 	err = json.Unmarshal(body, &genes)
 	if err != nil {
 		panic("Could not decode json into genes list!")
 	}
-	termReply := knockout(ontology, genes)
+	termReply := knockout(ontology, genes, growth == "true")
 	res := &Response{
 		Data:   termReply,
 		Errors: []string{},
